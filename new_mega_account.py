@@ -9,9 +9,21 @@ import random
 import string
 import csv
 import threading
+import secrets
 
-PASSWORD = "examplepassword"  # atleast 8 chars
 
+def generate_password(min_length, max_length=20):
+    if min_length < 10 or max_length > 20 or min_length > max_length:
+        min_length = 10
+        max_length = 20
+    random_length = random.randint(min_length, max_length)
+    alphabet = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(alphabet) for i in range(random_length))
+    return password
+
+
+# PASSWORD = "examplepassword"  # atleast 8 chars
+PASSWORD = generate_password(11, 17)
 
 def find_url(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
@@ -109,7 +121,7 @@ def new_account():
 
 if __name__ == "__main__":
     # how many accounts to create at once (keep the number under 10)
-    num_acc = 5
+    num_acc = 9
     for count in range(num_acc):
         t = threading.Thread(target=new_account)
         t.start()
